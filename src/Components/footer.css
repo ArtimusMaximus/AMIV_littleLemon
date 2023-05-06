@@ -1,0 +1,13 @@
+.foot > ul > li {
+    padding: 5px;
+}
+
+.foot > ul > li:hover {
+    text-decoration: overline;
+    cursor: pointer;
+}
+
+.foot > img:hover {
+    transform: translateX(30px);
+    transition: 2s;
+}

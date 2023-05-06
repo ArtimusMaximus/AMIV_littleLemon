@@ -27,7 +27,7 @@ const specials = [
 export default ({ hue }) => {
     return (
         <>
-            <div className="text-black grid w-fit h-fit mx-auto px-0 py-5 sm:p-5">
+            <div id="specials" className="text-black grid w-fit h-fit mx-auto px-0 py-5 sm:p-5">
                 <h1 className="text-4xl text-black italic font-black text-center" style={{color: `#${hue['Pear 2']}`}}>Specials</h1>
                 <ul className="flex flex-wrap justify-center">
                     {specials.map((item) => (

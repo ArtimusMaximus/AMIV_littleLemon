@@ -7,24 +7,24 @@ const data = [
     {
         img: image1,
         name: 'Da dove viene',
-        tag: 'Best food I never ate.'
+        tag: 'They really know a lot about lemons. True lemon mastery.'
     },
     {
         img: image1,
         name: 'Perchè lo utilizziamo',
-        tag: 'They really know a lot about lemons.'
+        tag: 'Whatever you buy, you wont get a lemon.'
     },
     {
         img: image1,
         name: 'Dove posso trovarlo',
-        tag: 'Will be back for fourths.'
+        tag: 'Will be back for fourths on the fourth of July at four p.m. on my fourty fourth birthday for a party of four.'
     }
 ]
 
 export default ({ hue }) => {
     return (
         <>
-            <div className="bg-black">
+            <div className="bg-black bg-bg-xy">
                 <Specials hue={hue} />
                 <About />
                 <Testimonials hue={hue} data={data} />

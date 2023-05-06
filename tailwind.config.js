@@ -5,7 +5,11 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'bg-xy': "url('./src/assets/black-mamba.png')"
+      }
+    },
   },
   plugins: [],
 }

@@ -13,7 +13,8 @@ export default ({ hue }) => {
                         <li>Telephone</li>
                     </ul>
                     <ul>
-                        <Link to={'/'}><li>Home</li></Link>
+                        {/* <Link to={'/'}><li>Home</li></Link> */}
+                        <a href="#"><li>Home</li></a>
                         <li>About</li>
                         <Link to={'/Reservations'}><li>Reserve a Table</li></Link>
                         <li>Menu</li>

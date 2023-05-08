@@ -15,10 +15,10 @@ export default () => {
                 </blockquote>
             </section>
             <section className='flex sm:flex-col flex-row items-center justify-center col-span-full row-start-2 sm:row-start-1 sm:col-start-3'>
-                <img className='row-start-2 sm:row-start-1 col-start-1 col-end-4 sm:col-start-3 sm:col-end-4 w-36 mx-auto m-3 p-3 sm:mt-2 sm:mb-1 rounded-full' src={image1} alt="" />
+                <img className='row-start-2 sm:row-start-1 col-start-1 col-end-4 sm:col-start-3 sm:col-end-4 w-36 mx-auto m-3 p-3 sm:mt-2 sm:mb-1 rounded-full hover:grayscale' src={image1} alt="" />
                 <span className='hidden sm:block'>Master Chef - Jéan Dog Van Damme</span>
                 <hr className=' w-full' />
-                <img className='row-start-2 sm:row-start-1 col-start-1 col-end-4 sm:col-start-3 sm:col-end-4 w-36 mx-auto m-3 p-3 sm:mb-1 sm:mt-1 rounded-full' src={image2} alt="investor's photo" />
+                <img className='row-start-2 sm:row-start-1 col-start-1 col-end-4 sm:col-start-3 sm:col-end-4 w-36 mx-auto m-3 p-3 sm:mb-1 sm:mt-1 rounded-full hover:grayscale' src={image2} alt="investor's photo" />
                 <span className='hidden sm:block'>Entrepreneurs - Sally & Harry</span>
             </section>
             </div>

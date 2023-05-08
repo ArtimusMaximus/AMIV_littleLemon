@@ -16,12 +16,15 @@ export const formReducer = (state, action) => {
                 ...state,
                 [action.payload.name]: action.payload.value
             }
-        case "SELECT":
-            return {}
+        case "SUCCESS":
+            return console.log('clearForm')
         case "LOADING":
             return {}
         case "ERROR":
-            return {}
+            return {
+                ...state,
+                proceed: 'cannot'
+            }
         default:
             return state;
     }

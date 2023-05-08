@@ -1,6 +1,6 @@
 export const ACTION_TYPES = {
     LOADING: "LOADING",
     INPUT: "INPUT",
-    SELECT: "SELECT",
+    SUCCESS: "SUCCESS",
     ERROR: "ERROR"
 }

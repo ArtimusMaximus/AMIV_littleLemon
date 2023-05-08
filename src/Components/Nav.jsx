@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 
 
 export default () => {
-    const navElements = ['Home', 'About', 'Menu', 'Reservations', 'Order Online']
+    const navElements = ['Menu', 'About', 'Reservations', 'Order Online']
 
     return (
         <>

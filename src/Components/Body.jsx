@@ -12,7 +12,7 @@ const data = [
     {
         img: image1,
         name: 'Perchè lo utilizziamo',
-        tag: 'Whatever you buy, you wont get a lemon.'
+        tag: "Whatever you buy, you won't get a lemon."
     },
     {
         img: image1,

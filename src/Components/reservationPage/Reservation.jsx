@@ -7,6 +7,8 @@ import { useEffect, useReducer, useState } from "react";
 import { INITIAL_STATE, formReducer } from "../../reducer/form_reducer";
 import { ACTION_TYPES } from "../../reducer/action_types";
 import { useSubmit } from "react-router-dom";
+import ReactDatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 
 export default () => {
@@ -15,8 +17,8 @@ export default () => {
     const [hidden, setHidden] = useState('hidden');
     const [hidden2, setHidden2] = useState('hidden');
     const [borderError, setBorderError] = useState('focus:ring focus:ring-lime-300 focus:outline-4 focus:outline-none');
-    const [invalidSubmitError, setInvalidSubmitError] = useState(false);
-    const [currentInput, setCurrentInput] = useState(null)
+    const [currentInput, setCurrentInput] = useState(null);
+    
     
     const handleChange = e => {
         let name = e.target.name
@@ -24,29 +26,39 @@ export default () => {
         let id = e.target.id
         dispatch({ type: ACTION_TYPES.INPUT, payload: { name: name, value: value } })
 
+
         if (name === 'name') {
             if (value.length < 5 && value.length > 2) {
                 setHidden('block');
                 setBorderError('focus:ring focus:ring-red-400 focus:outline-4 border-red-500 border-4');
+                dispatch({ type: ACTION_TYPES.SUBMITTABLE, payload: false })
             } else if (value.length > 4) {
                  setHidden('hidden'); 
                  setBorderError('focus:ring focus:ring-lime-300 focus:outline-4 focus:outline-none');
+                 dispatch({ type: ACTION_TYPES.SUBMITTABLE, payload: true })
             }
-        } else if (name === 'guests') {
-            if (value === 0 || value > 10) {
+        } else if (name === 'guestCount') {
+            if (parseInt(value) === 0 || parseInt(value) > 10) {
                 setHidden2('block')
                 setBorderError('focus:ring focus:ring-red-400 focus:outline-4 border-red-500 border-4');
-            } else if (value > 1 && value <= 10) {
+                dispatch({ type: ACTION_TYPES.SUBMITTABLE, payload: false })
+            } else if (parseInt(value) > 1 && parseInt(value) <= 10) {
                 setHidden2('hidden'); 
                 setBorderError('focus:ring focus:ring-lime-300 focus:outline-4 focus:outline-none');
+                dispatch({ type: ACTION_TYPES.SUBMITTABLE, payload: true })
             }
         }
     }
-    console.log(state);
+    
+    const handleSelect = e => {
+        console.log(e);
+        dispatch({ type: ACTION_TYPES.DATE, payload: { name: e.target.name, value: e.target.value }})
+    }
+    
 
     const handleSubmit = e => {
         e.preventDefault();
-        
+        console.log('form submitted');
     }
 
     const formik = useFormik({
@@ -67,13 +79,25 @@ export default () => {
     
 
     useEffect(() => {
-
+        let subButton = document.getElementById('subButton')
+        
+        
         window.addEventListener('click', e => {
-            console.log(e.target);
             setCurrentInput(e.target)
         })
+
+        if (state.date !== '' && state.time !== '' && state.name !== '')  {
+            
+            dispatch({ type: ACTION_TYPES.SUBMITTABLE, payload: true })
+            
+        } else {
+            dispatch({ type: ACTION_TYPES.SUBMITTABLE, payload: false })
+
+        }
         
-    }, [currentInput])
+
+        
+    }, [state.proceed, state.date, state.time])
 
 
     return (
@@ -85,12 +109,16 @@ export default () => {
                     <h1 className="text-5xl text-center mt-1 italic font-extrabold">Reserve a table!</h1>
                     <form className="flex flex-col items-center justify-between p-5 m-5 mt-1" onSubmit={handleSubmit}>
                     <label htmlFor="date">Reservation name</label>
-                        <input onChange={handleChange} className={` p-5 m-5 mb-1 mt-1 rounded-md ${currentInput?.name === 'name' ? borderError : 'focus:ring focus:ring-lime-300 focus:outline-4 focus:outline-none'}`} type="text" name='name' />
+                        <input onChange={handleChange} className={`p-5 m-5 mb-1 mt-1 rounded-md ${currentInput?.name === 'name' ? borderError : 'focus:ring focus:ring-lime-300 focus:outline-4 focus:outline-none'}`} type="text" name='name' />
                         <p className={`text-red-500 text-sm italic ${hidden}`}>Must be 5 characters minimum!</p>
+                        {/* <ReactDatePicker selected={date} onChange={date => setDate(date)} /> */}
                         <label htmlFor="date">Date of your visit</label>
-                        <input onChange={handleChange} className="p-5 m-5 mt-1 rounded-md focus:ring focus:ring-lime-300 focus:outline-4 focus:outline-none" type="date" name='date' />
+                        <input onChange={handleChange} onSelect={handleSelect} className="p-5 m-5 mt-1 rounded-md focus:ring focus:ring-lime-300 focus:outline-4 focus:outline-none" type="date" name='date' id="date" value={state.date} />
+                        <label htmlFor="date">Time</label>
+                        <input onChange={handleChange}  className="p-5 m-5 mt-1 rounded-md focus:ring focus:ring-lime-300 focus:outline-4 focus:outline-none" type="time" name='time' id="time" value={state.time} />
+                        
                         <label htmlFor="date">Number of guests</label>
-                        <input onChange={handleChange} className={`p-5 m-5 mb-1 mt-1 rounded-md ${currentInput?.name === 'guests' ? borderError : 'focus:ring focus:ring-lime-300 focus:outline-4 focus:outline-none'}`} type="number" name='guests' />
+                        <input onChange={handleChange} defaultValue={2} className={`p-5 m-5 mb-1 mt-1 rounded-md ${currentInput?.name === 'guestCount' ? borderError : 'focus:ring focus:ring-lime-300 focus:outline-4 focus:outline-none'}`} type="number" name='guestCount' />
                         <p className={`text-red-500 text-sm italic ${hidden2}`}>Reservations must be for a minimum of 1 person, and a maximum of 10!</p>
                         <label htmlFor="date">Occasion</label>
                         <select onChange={handleChange} className="p-5 m-5 mt-1 rounded-md" type="select" name='occasion'>
@@ -99,9 +127,15 @@ export default () => {
                             <option value="date">First Date</option>
                             <option value="celebrate">Anniversary</option>
                         </select>
-                        <label className="text-center" htmlFor="date">Comments?</label>
-                        <textarea onChange={handleChange} className={`p-5 m-5 mb-1 mt-1 rounded-md focus:ring focus:ring-lime-300 focus:outline-4 focus:outline-none`} type="text" name='comments' placeholder="e.g. `patio seating...`" />
-                        <button type='submit' className="p-5 border border-dotted hover:border-solid border-black rounded-lg font-semibold hover:font-bold">Submit</button>
+                        <label className="text-center" htmlFor="comments">Comments?</label>
+                        <textarea onChange={handleChange} className={`p-5 m-5 mt-1 rounded-md focus:ring focus:ring-lime-300 focus:outline-4 focus:outline-none`} type="text" name='comments' placeholder="e.g. `patio seating...`" />
+                            <button id="subButton"  type='submit' className={`${state.proceed ? '' : 'cursor-not-allowed has-tooltip'} p-5 border border-dotted hover:border-solid border-black rounded-lg font-semibold hover:font-bold`}>
+                                Submit
+                                <span className="tooltip rounded-lg p-3 text-lime-300 bg-black mx-auto">
+                                    Please provide reservation 'name', 'date/time' & 'guest count'.
+                                </span>
+                            </button>
+                        
                     </form>
                 </div>
             </div>

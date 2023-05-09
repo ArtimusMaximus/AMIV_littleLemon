@@ -1,12 +1,14 @@
-import { useReducer } from "react";
-import { ACTION_TYPES } from "./action_types";
+
 
 
 export const INITIAL_STATE = {
+    name: '',
     date: '',
-    guestCount: '',
+    time: '',
+    guestCount: 2,
     occasion: '',
-    comments: ''
+    comments: '',
+    proceed: false
 }
 
 export const formReducer = (state, action) => {
@@ -17,13 +19,20 @@ export const formReducer = (state, action) => {
                 [action.payload.name]: action.payload.value
             }
         case "SUCCESS":
-            return console.log('clearForm')
+            return {
+                proceed: action.payload
+            }
         case "LOADING":
             return {}
-        case "ERROR":
+        case "SUBMITTABLE":
             return {
                 ...state,
-                proceed: 'cannot'
+                proceed: action.payload
+            }
+        case "DATE":
+            return {
+                ...state,
+                [action.payload.name]: action.payload.value
             }
         default:
             return state;

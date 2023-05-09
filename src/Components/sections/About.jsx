@@ -5,7 +5,7 @@ import image2 from '../../assets/couple.webp'
 export default () => {
     return (
         <>  
-            <div className="bg-white w-full h-fit grid grid-cols-3 border-lime-300 border-4">
+            <div id="about" className="bg-white w-full h-fit grid grid-cols-3 border-lime-300 border-4">
 
             <section className="row-start-1 col-span-full sm:col-start-1 sm:col-end-3">
                 <h1 className="text-4xl font-extrabold p-5">About the "Little Lemon"...</h1>

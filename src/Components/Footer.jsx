@@ -1,9 +1,12 @@
-import { Link } from 'react-router-dom'
 import image from '../assets/logo_trim.png'
 import './footer.css'
+import { HashLink } from 'react-router-hash-link'
 
+
+const navElements2 = [{ text: 'Home', location: 'Home' }, { text: 'Menu', location: 'Menu' }, { text: 'About', location: '#about' }, { text: 'Reservations', location: 'Reservations' }, { text: 'Order Online', location: 'OrderOnline' }]
 
 export default ({ hue }) => {
+    
     return (
         <>
             <div className="foot flex items-center justify-around h-52 border-8 border-lime-300 bg-black bg-bg-xy text-yellow-300 font-bold" >
@@ -13,11 +16,11 @@ export default ({ hue }) => {
                         <li>Telephone</li>
                     </ul>
                     <ul>
-                        {/* <Link to={'/'}><li>Home</li></Link> */}
-                        <a href="#"><li>Home</li></a>
-                        <li>About</li>
-                        <Link to={'/Reservations'}><li>Reserve a Table</li></Link>
-                        <li>Menu</li>
+                        {navElements2.map((link) => {
+                            return (
+                                <HashLink key={link.text} to={link.location}><li>{link.text}</li></HashLink>
+                            )
+                        })}
                     </ul>
                     <ul>
                         <li>facebook</li>

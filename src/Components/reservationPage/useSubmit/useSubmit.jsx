@@ -1,12 +1,12 @@
 import { useState } from "react"
 
 
+const wait = ms => new Promise((res) => setTimeout(res, ms))
 
 export default useSubmit = () => {
     const [response, setResponse] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    const wait = new Promise((res) => setTimeout(res))
 
     const submit = async (url, data) => {
         setLoading(true);
@@ -29,5 +29,5 @@ export default useSubmit = () => {
             setLoading(false)
         }
     }
-    return { loading, response, submit}
+    return { loading, response, submit }
 }

@@ -16,8 +16,13 @@ function Title() {
     return (
         <>
         <div className='row-start-1 xl:col-start-2 col-start-1 sm:col-start-2 col-end-5 col-span-3 sm:pb-5 mx-auto'>
-            <h1 className='text-5xl sm:text-8xl text-black font-extrabold pb-5'>Little Lemon</h1>
-            <p className='italic text-black px-5 p-1 border border-black border-dashed rounded-xl w-fit'>Healthy Cuisine<span className='text-xs'><br />With a twist</span></p>
+            <p className='text-5xl lg:text-8xl md:text-7xl text-black font-extrabold pb-5 flex-row hidden sm:flex'>Little Lem
+            <span className=''>
+                <img className='sm:w-10 md:w-12 lg:w-16 sm:mt-1 md:mt-3 lg:mt-4 rounded-2xl sm:opacity-100 hover:duration-200 hover:scale-125' src={logo5} alt="" />
+                </span>n
+            </p>
+            <p className='text-5xl sm:text-8xl text-black font-extrabold pb-5 block sm:hidden'>Little Lemon</p>
+            <p className='italic text-black px-5 p-1 border border-black border-dashed rounded-xl w-fit'>Healthy Cuisine<span className='text-xs text-yellow-300'><br />With a twist</span></p>
             <Text />
         </div>
         </>

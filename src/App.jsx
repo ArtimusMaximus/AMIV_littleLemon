@@ -6,8 +6,6 @@ import colorScheme from './assets/colorscheme.js';
 
 
 function App() {
-  console.log(colorScheme);
-
   return (
     <>
       <div className="scroll-smooth w-full h-full bg-gray-400 font-extralight">

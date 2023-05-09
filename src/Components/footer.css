@@ -1,8 +1,14 @@
-.foot > ul > li {
+
+.foot li {
     padding: 5px;
 }
 
 .foot > ul > li:hover {
+    text-decoration: overline;
+    cursor: pointer;
+}
+
+.foot a:hover {
     text-decoration: overline;
     cursor: pointer;
 }

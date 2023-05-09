@@ -5,10 +5,11 @@ export const INITIAL_STATE = {
     name: '',
     date: '',
     time: '',
-    guestCount: 2,
+    guestCount: '',
     occasion: '',
     comments: '',
-    proceed: false
+    proceed: false,
+    loading: false
 }
 
 export const formReducer = (state, action) => {
@@ -20,10 +21,13 @@ export const formReducer = (state, action) => {
             }
         case "SUCCESS":
             return {
-                proceed: action.payload
+                ...INITIAL_STATE
             }
         case "LOADING":
-            return {}
+            return {
+                ...state,
+                loading: action.payload
+            }
         case "SUBMITTABLE":
             return {
                 ...state,

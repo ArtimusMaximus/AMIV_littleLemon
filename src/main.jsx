@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
 import Reservation from './Components/reservationPage/Reservation.jsx';
+import UnderConstruction from './UnderConstruction.jsx';
 import './index.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
   {
     path: '/Home',
     element: <App />
+  },
+  {
+    path: '*',
+    element: <UnderConstruction />
   }
 ]);
 

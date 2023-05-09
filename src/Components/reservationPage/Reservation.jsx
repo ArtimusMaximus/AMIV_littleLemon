@@ -1,6 +1,8 @@
 import Nav from "../Nav";
 import Footer from "../Footer";
 import image from '../../assets/logo_shadow.png';
+import image1 from '../../assets/turtleneck.webp'
+import image2 from '../../assets/couple.webp'
 import * as Yup from 'yup';
 import { useFormik } from "formik";
 import { useEffect, useReducer, useState } from "react";
@@ -19,6 +21,7 @@ export default () => {
     const [borderError, setBorderError] = useState('focus:ring focus:ring-lime-300 focus:outline-4 focus:outline-none');
     const [currentInput, setCurrentInput] = useState(null);
     
+    const delay = t => new Promise(res => setTimeout(res, t))
     
     const handleChange = e => {
         let name = e.target.name
@@ -51,52 +54,90 @@ export default () => {
     }
     
     const handleSelect = e => {
-        console.log(e);
         dispatch({ type: ACTION_TYPES.DATE, payload: { name: e.target.name, value: e.target.value }})
+    }
+
+    const clearFormValues = (e) => {
+        document.querySelector('textarea').value = ''
+        document.querySelectorAll('input').forEach((i) => {
+            console.log(i);
+            i.value = ''
+        })
+    }
+    function disableFormsDuringPost(Boolean) {
+        let inputsArr = document.querySelectorAll('input')
+        let textArea = document.querySelector('textarea')
+        let select = document.querySelector('select')
+        const allInputsArr = [...inputsArr, textArea, select];
+        if (Boolean) {
+            allInputsArr.forEach((i) => {
+                i.disabled = Boolean
+            })
+        } else {
+            allInputsArr.forEach((i) => {
+                i.disabled = Boolean
+            })
+        }
     }
     
 
     const handleSubmit = e => {
+        
+        
         e.preventDefault();
+        let alertNote = document.getElementById('alertNote')
+        let successNote = document.getElementById('successNote')
         console.log('form submitted');
+        if (state.proceed) {
+            disableFormsDuringPost(true)
+            dispatch({ type: ACTION_TYPES.LOADING, payload:  true  })
+            
+            console.log(state.loading);
+            
+            delay(7000)
+                .then(() => dispatch({ type: ACTION_TYPES.SUCCESS }))
+                .then(() => clearFormValues(e))
+                .then(() => dispatch({ type: ACTION_TYPES.LOADING, payload:  false  }))
+            
+             // resets initial state
+            
+            console.log(state);
+            alertNote.classList.remove('hidden')
+            delay(4000)
+                .then(() => alertNote.classList.add('hidden'))
+                .then(() => successNote.classList.remove('hidden'))
+                .then(() => delay(3000).then(() => successNote.classList.add('hidden')))
+                .then(() => disableFormsDuringPost(false))
+        }
     }
 
-    const formik = useFormik({
-        // initial values
-        initialValues: {
-            date: new Date().now,
-            guests: '',
-            occasion: 'want_lemons',
-            comments: ''
-        },
-        onSubmit: values => {
-            
+    useEffect(() => {
+        let subButton = document.getElementById('subButton');
+            let spinner = document.getElementById('spinner')
+        if (state.loading) {
+            subButton.classList.add('hidden')
+            spinner.classList.remove('hidden')
+        } else if (!state.loading) {
+            spinner.classList.add('hidden')
+            subButton.classList.remove('hidden')
         }
-        // submit
-        // schema validation
-    })
+
+    }, [state.loading])
     
     
 
     useEffect(() => {
-        let subButton = document.getElementById('subButton')
-        
-        
+        console.log(state);
+
         window.addEventListener('click', e => {
             setCurrentInput(e.target)
         })
 
-        if (state.date !== '' && state.time !== '' && state.name !== '')  {
-            
+        if (state.date !== '' && state.time !== '' && state.name !== '' && state.guestCount !== '')  {
             dispatch({ type: ACTION_TYPES.SUBMITTABLE, payload: true })
-            
         } else {
             dispatch({ type: ACTION_TYPES.SUBMITTABLE, payload: false })
-
         }
-        
-
-        
     }, [state.proceed, state.date, state.time])
 
 
@@ -104,7 +145,7 @@ export default () => {
         <>
         <Nav />
             <div className="grid grid-cols-1 sm:grid-cols-3 w-full h-full bg-gradient-to-tl from-lime-300 via-pink-300 to-yellow-300">
-                <span className="col-start-1 col-end-4 sm:col-end-2 mx-auto"><img className="w-24 sm:w-52" src={image} alt="" /></span>
+                <span className="col-start-1 col-end-4 sm:col-end-2 mx-auto"><img className="w-24 sm:w-52 hover:duration-200 hover:scale-125" src={image} alt="" /></span>
                 <div className="sm:col-start-2 sm:col-end-3 col-start-1 col-end-4">
                     <h1 className="text-5xl text-center mt-1 italic font-extrabold">Reserve a table!</h1>
                     <form className="flex flex-col items-center justify-between p-5 m-5 mt-1" onSubmit={handleSubmit}>
@@ -118,7 +159,7 @@ export default () => {
                         <input onChange={handleChange}  className="p-5 m-5 mt-1 rounded-md focus:ring focus:ring-lime-300 focus:outline-4 focus:outline-none" type="time" name='time' id="time" value={state.time} />
                         
                         <label htmlFor="date">Number of guests</label>
-                        <input onChange={handleChange} defaultValue={2} className={`p-5 m-5 mb-1 mt-1 rounded-md ${currentInput?.name === 'guestCount' ? borderError : 'focus:ring focus:ring-lime-300 focus:outline-4 focus:outline-none'}`} type="number" name='guestCount' />
+                        <input onChange={handleChange} className={`p-5 m-5 mb-1 mt-1 rounded-md ${currentInput?.name === 'guestCount' ? borderError : 'focus:ring focus:ring-lime-300 focus:outline-4 focus:outline-none'}`} type="number" name='guestCount' value={state.guestCount} />
                         <p className={`text-red-500 text-sm italic ${hidden2}`}>Reservations must be for a minimum of 1 person, and a maximum of 10!</p>
                         <label htmlFor="date">Occasion</label>
                         <select onChange={handleChange} className="p-5 m-5 mt-1 rounded-md" type="select" name='occasion'>
@@ -135,47 +176,28 @@ export default () => {
                                     Please provide reservation 'name', 'date/time' & 'guest count'.
                                 </span>
                             </button>
+                            <span id="spinner" className="animate-spin text-6xl m-0 font-extrabold text-black hidden p-0">
+                                &#10042;
+                            </span>
                         
                     </form>
+                </div>
+                <div id="alertNote" className="bg-gradient-to-br from-yellow-300 via-pink-300 to-lime-300 border-t border-b border-3 border-black text-black px-4 py-3 my-auto mx-auto z-50 hidden shadow-lg animate-fade" role="alert">
+                    <p className="font-bold">Please wait while we process your request.</p>
+                    <img className='w-36 mx-auto m-3 p-3 sm:mt-2 sm:mb-1 rounded-full hover:grayscale' src={image1} alt="Master Chef" />
+                    <span className='hidden sm:block'>Master Chef - Jéan Dog Van Damme</span>
+                    <p className="text-sm">We can't wait to have you join us for a splendid meal!</p>
+                </div>
+                <div id="successNote" className="bg-black bg-bg-xy border-t border-b border-3 border-lime-300 text-lime-300 px-4 py-3 my-auto mx-auto z-50 hidden shadow-lg animate-fade" role="alert">
+                    <p className="font-bold text-xl">Success!</p>
+                    <img className='w-36 mx-auto m-3 p-3 sm:mb-1 sm:mt-1 rounded-full hover:grayscale' src={image2} alt="investor's photo" />
+                    <span className='hidden sm:block'>Entrepreneurs - Sally & Harry</span>
+                    <p className="text-sm text-lime-300">Your reservation has been made, save the date!</p>
                 </div>
             </div>
         <Footer />
         </>
     )
 
-
-    // return (
-    //     <>
-    //         <div className="w-full max-w-xs">
-    //             <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-    //                 <div className="mb-4">
-    //                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
-    //                     Username
-    //                 </label>
-    //                 <input onChange={handleChange} className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight ${borderError} focus:outline-none focus:shadow-outline`} id="username" type="text" placeholder="Username" />
-    //                 <p className={ `text-red-500 text-xs italic ${hidden}`}>Must be 5 characters minimum!</p>
-    //                 </div>
-    //                 <div className="mb-6">
-    //                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-    //                     Password
-    //                 </label>
-    //                 <input className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="******************" />
-    //                 <p className={ `text-red-500 text-xs italic ${hidden}`}>Please choose a password.</p>
-    //                 </div>
-    //                 <div className="flex items-center justify-between">
-    //                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
-    //                     Sign In
-    //                 </button>
-    //                 <a className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="#">
-    //                     Forgot Password?
-    //                 </a>
-    //                 </div>
-    //             </form>
-    //         <p className="text-center text-gray-500 text-xs">
-    //             &copy;2020 Acme Corp. All rights reserved.
-    //         </p>
-    //         </div>
-    //     </>
-    // )
     
 }

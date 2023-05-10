@@ -1,19 +1,27 @@
 
 .foot li {
     padding: 5px;
+    
 }
 
 .foot > ul > li:hover {
-    text-decoration: overline;
+    text-decoration: underline;
     cursor: pointer;
 }
 
 .foot a:hover {
-    text-decoration: overline;
+    text-decoration: underline;
     cursor: pointer;
 }
 
 .foot > img:hover {
     transform: translateX(30px);
     transition: 2s;
+}
+
+@media screen and (max-width: 429px) {
+    .foot li {
+        font-size: 12px;
+        margin: 10px;
+    }
 }

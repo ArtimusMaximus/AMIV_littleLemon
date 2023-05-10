@@ -7,17 +7,20 @@ const specials = [
     {
         tag: 'Lemongrass pad thai, tomatoes & cucumbers...',
         name: 'Lemongrass Avocado Goodness',
-        img: image1
+        img: image1,
+        alt: 'Lemongrass based pad thai dish'
     },
     {
         tag: 'Wind up or down with a house themed lemondrop...',
         name: 'House Lemondrop Martini',
-        img: image2
+        img: image2,
+        alt: 'Lemon drop Vodka martini, shaken not stirred'
     },
     {
         tag: 'Tofu and lemongrass dish, healthy & tasty...',
         name: "Tofu grass",
-        img: image3
+        img: image3,
+        alt: 'A dish of tofu sprinkled with lemon grass'
     },
 ];
 

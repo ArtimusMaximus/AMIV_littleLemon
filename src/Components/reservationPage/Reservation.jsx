@@ -3,31 +3,27 @@ import Footer from "../Footer";
 import image from '../../assets/logo_shadow.png';
 import image1 from '../../assets/turtleneck.webp'
 import image2 from '../../assets/couple.webp'
-import * as Yup from 'yup';
-import { useFormik } from "formik";
 import { useEffect, useReducer, useState } from "react";
 import { INITIAL_STATE, formReducer } from "../../reducer/form_reducer";
 import { ACTION_TYPES } from "../../reducer/action_types";
 import { useSubmit } from "react-router-dom";
-import ReactDatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+
 
 
 export default () => {
     const [state, dispatch] = useReducer(formReducer, INITIAL_STATE);
-    const { loading, response, submit } = useSubmit();
     const [hidden, setHidden] = useState('hidden');
     const [hidden2, setHidden2] = useState('hidden');
     const [borderError, setBorderError] = useState('focus:ring focus:ring-lime-300 focus:outline-4 focus:outline-none');
     const [currentInput, setCurrentInput] = useState(null);
     
-    const delay = t => new Promise(res => setTimeout(res, t))
+    const delay = t => new Promise(res => setTimeout(res, t));
     
     const handleChange = e => {
         let name = e.target.name
         let value = e.target.value
         let id = e.target.id
-        dispatch({ type: ACTION_TYPES.INPUT, payload: { name: name, value: value } })
+        dispatch({ type: ACTION_TYPES.INPUT, payload: { name: name, value: value } });
 
 
         if (name === 'name') {
@@ -60,7 +56,7 @@ export default () => {
     const clearFormValues = (e) => {
         document.querySelector('textarea').value = ''
         document.querySelectorAll('input').forEach((i) => {
-            console.log(i);
+            // console.log(i);
             i.value = ''
         })
     }
@@ -83,7 +79,6 @@ export default () => {
 
     const handleSubmit = e => {
         
-        
         e.preventDefault();
         let alertNote = document.getElementById('alertNote')
         let successNote = document.getElementById('successNote')
@@ -92,16 +87,12 @@ export default () => {
             disableFormsDuringPost(true)
             dispatch({ type: ACTION_TYPES.LOADING, payload:  true  })
             
-            console.log(state.loading);
-            
             delay(7000)
                 .then(() => dispatch({ type: ACTION_TYPES.SUCCESS }))
                 .then(() => clearFormValues(e))
                 .then(() => dispatch({ type: ACTION_TYPES.LOADING, payload:  false  }))
             
-             // resets initial state
             
-            console.log(state);
             alertNote.classList.remove('hidden')
             delay(4000)
                 .then(() => alertNote.classList.add('hidden'))
@@ -127,7 +118,7 @@ export default () => {
     
 
     useEffect(() => {
-        console.log(state);
+        // console.log(state);
 
         window.addEventListener('click', e => {
             setCurrentInput(e.target)
